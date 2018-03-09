@@ -1,5 +1,12 @@
 var socket = io();
 
+$(document).ready(function() {
+    $("#send").click(function() {
+        var text = $("#textMessage").val();
+        socket.emit('createMessage', {from: "MatteoClient", text})
+    });
+});
+
 socket.on('connect', function() {
     console.log('Connected to the server');
 
@@ -23,4 +30,5 @@ socket.on('disconnect', function() {
 
 socket.on('newMessage', function(data) {
     console.log('Got new message', data);
+    $("#messages").append("<p>" + data.text + "</p>")
 });

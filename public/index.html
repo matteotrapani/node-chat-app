@@ -2,12 +2,18 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <script src="/jquery-3.3.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/index.js"></script>
     </head>
 
     <body>
         <p>Welcome to the chat app</p>
+        <p>Message</p>
+        <input type="text" id="textMessage">
+        <input type="button" id="send" value="send">
 
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/index.js"></script>
+        <div id="messages"></div>
+
     </body>
 </html>
