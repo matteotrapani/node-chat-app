@@ -5,6 +5,13 @@ $(document).ready(function() {
         var text = $("#textMessage").val();
         socket.emit('createMessage', {from: "MatteoClient", text})
     });
+    $('#textMessage').keypress(function(e){
+        if(e.which == 13){//Enter key pressed
+            $('#send').click();//Trigger search button click event
+            $("#textMessage").val("");
+        }
+    });
+
 });
 
 socket.on('connect', function() {
