@@ -3,7 +3,9 @@ var socket = io();
 $(document).ready(function() {
     $("#send").click(function() {
         var text = $("#textMessage").val();
-        socket.emit('createMessage', {from: "MatteoClient", text})
+        socket.emit('createMessage', {from: "MatteoClient", text}, function(message) {
+            console.log('Got it!', message);
+        })
     });
     $('#textMessage').keypress(function(e){
         if(e.which == 13){//Enter key pressed
