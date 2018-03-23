@@ -126,6 +126,11 @@
     -webkit-overflow-scrolling: touch;
   }
   
+  .chat__messagesTime {
+    font-size: 0.7rem;
+    font-style: italic;
+  }
+  
   .chat__footer {
     background: #e6eaee;
     display: flex;
