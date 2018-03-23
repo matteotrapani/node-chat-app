@@ -109,13 +109,4 @@ socket.on('updateUserList', function(users) {
   });
 
   $('#users').html(ol);
-  // console.log('Users list', users);
-  // var ulElement = $("ul");
-  // var template = $('#user-template').html();
-  // users.forEach(name => {
-  //   var html = Mustache.render(template, {name});
-  //   ulElement.append(html)
-  // });
-
-  // $('#users').append(ulElement);
 })
