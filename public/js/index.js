@@ -35,8 +35,8 @@ $(document).ready(function() {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude
         });
-      }, function () {
-        locationButton.removeAttr('disabled').text('Send location');
+      }, function (err) {
+        $('#send-location').removeAttr('disabled').text('Send location');
         alert('Unable to fetch location.');
       });
     });
