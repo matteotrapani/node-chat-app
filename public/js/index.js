@@ -1,5 +1,6 @@
 var socket = io();
-// var datePattern = 'MMM Do, YYYY h:mm a';
+  var datePattern = 'h:mm a';
+  // var datePattern = 'MMM Do, YYYY h:mm a';
 
 var sendMessage = text => {
     socket.emit('createMessage', {from: "MatteoClient", text}, function(message) {
@@ -50,28 +51,47 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newMessage', function(data) {
-  console.log('newMessage', data);
-  var li = $('<li></li>');
-  li.text(`${data.from}: ${data.text}`);
-  appendTime(data.createdAt, li);
+  var formattedTime = moment(data.createdAt).format(datePattern);
+  var template = $('#message-template').html();
+  var html = Mustache.render(template, {
+    text: data.text,
+    from: data.from,
+    createdAt: formattedTime
+  });
 
-  $('#messages').append(li);
+  $('#messages').append(html);
+
+
+  // console.log('newMessage', data);
+  // var li = $('<li></li>');
+  // li.text(`${data.from}: ${data.text}`);
+  // appendTime(data.createdAt, li);
+
+  // $('#messages').append(li);
 });
 
 socket.on('newLocationMessage', function(data) {
-  var li = $('<li></li>');
-  var a = $('<a target="_blank">My current location</a>');
+  var formattedTime = moment(data.createdAt).format(datePattern);
+  var template = $('#messageLocation-template').html();
+  var html = Mustache.render(template, {
+    url: data.url,
+    from: data.from,
+    createdAt: formattedTime
+  });
 
-  li.text(`${data.from}: `);
-  a.attr('href', data.url);
-  li.append(a);
-  appendTime(data.createdAt, li);
-  
-  $('#messages').append(li);
+  $('#messages').append(html);
+  // var li = $('<li></li>');
+  // var a = $('<a target="_blank">My current location</a>');
+
+  // li.text(`${data.from}: `);
+  // a.attr('href', data.url);
+  // li.append(a);
+  // appendTime(data.createdAt, li);
+
+  // $('#messages').append(li);
 })
 
 var appendTime = (timestamp, element) => {
-  var datePattern = 'h:mm a';
   var formattedTime = moment(timestamp).format(datePattern);
   element.append(`<p class="chat__messagesTime">${formattedTime}</p>`)
 }
