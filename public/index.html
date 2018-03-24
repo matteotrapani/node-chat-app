@@ -24,7 +24,11 @@
                 </div>
                 <div class="form-field">
                     <label>Room name</label>
-                    <input type="text" name="room" />
+                    <!-- <input type="text" name="room" />
+                    <select id="room-select" name="room"></select> -->
+                    <input list="rooms" name="room">
+                    <datalist id="rooms">
+                    </datalist>
                 </div>
                 <div class="form-field">
                     <button>Join</button>

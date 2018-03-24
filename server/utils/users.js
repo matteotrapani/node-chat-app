@@ -31,8 +31,8 @@ class Users {
     addUser (id, name, room) {
         var user = {
             id,
-            room,
-            name
+            room: room.toLowerCase(),
+            name: name.toLowerCase()
         };
         this.users.push(user);
 
@@ -51,8 +51,17 @@ class Users {
         return this.users.find(user => user.id === id);
     }
     
+    getUserByName (name) {
+        return this.users.find(user => user.name === name.toLowerCase());
+    }
+    
     getUserList (room) {
         return this.users.filter((user) => user.room === room).map(user => user.name);
+    }
+
+    getRooms () {
+        var rooms = this.users.map(user => user.room);
+        return rooms.filter((room, pos, arr) => arr.indexOf(room) === pos);
     }
 }
 

@@ -18,19 +18,24 @@ app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
     console.log('New user connected');
+    socket.broadcast.emit('updateRoomsList', users.getRooms());
 
     socket.on('join', (data, callback) => {
         if (!isValidString(data.name) || !isValidString(data.room))
             callback("Name and room values must not be empty!");
 
-        socket.join(data.room);
-        users.removeUser(socket.id);
-        users.addUser(socket.id, data.name, data.room);
+        var user = users.getUserByName(data.name);
+        if (!user) {
+            users.removeUser(socket.id);
+            user = users.addUser(socket.id, data.name, data.room);
+        }
+        socket.join(user.room);
 
-        io.to(data.room).emit('updateUserList', users.getUserList(data.room));
+        io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+        socket.broadcast.emit('updateRoomsList', users.getRooms());
 
         socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-        socket.broadcast.to(data.room).emit('newMessage', generateMessage('Admin',  `${data.name} has joined`));
+        socket.broadcast.to(user.room).emit('newMessage', generateMessage('Admin',  `${data.name} has joined`));
         callback();
     });
 
@@ -54,8 +59,9 @@ io.on('connection', (socket) => {
         var user = users.removeUser(socket.id);
       
         if (user) {
-          io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-          io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left`));
+            io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+            io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left`));
+            socket.broadcast.emit('updateRoomsList', users.getRooms());
         }
     });
 });
